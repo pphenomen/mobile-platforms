@@ -8,30 +8,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DrawPanel extends JPanel {
-    private String selectedShape = "Линия"; // фигура по умолчанию
+    private String selectedShape = "Кисть"; // фигура по умолчанию
     public List<IDrawFigure> figures = new ArrayList<>();
     private int startX, startY, endX, endY;
     private int customRadius = 50; // радиус по умолчанию
     private Color selectedColor = Color.BLACK;
+    private PaintBrush currentBrushStroke = null;
 
     public DrawPanel() {
         setBackground(Color.WHITE);
 
+        // слушатель нажатия и отпускания мышки
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
                 startX = e.getX();
                 startY = e.getY();
+
+                if (selectedShape.equals("Кисть") || selectedShape.equals("Ластик")) {
+                    Color colorToUse = selectedShape.equals("Ластик") ? Color.WHITE : selectedColor;
+                    currentBrushStroke = new PaintBrush(colorToUse);
+                    currentBrushStroke.addPoint(startX, startY);
+                    figures.add(currentBrushStroke);
+                    repaint();
+                }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 endX = e.getX();
                 endY = e.getY();
-                addFigure();
+
+                if (!selectedShape.equals("Кисть") && !selectedShape.equals("Ластик")) {
+                    addFigure();
+                } else {
+                    currentBrushStroke = null;
+                }
+            }
+        });
+
+        // слушатель движения мышки
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                if ((selectedShape.equals("Кисть") || selectedShape.equals("Ластик")) && currentBrushStroke != null) {
+                    currentBrushStroke.addPoint(e.getX(), e.getY());
+                    repaint();
+                }
             }
         });
     }
+
 
     public void setSelectedShape(String shape) {
         if (shape.equals("Очистить")) {

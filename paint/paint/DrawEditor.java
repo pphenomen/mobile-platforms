@@ -11,7 +11,7 @@ public class DrawEditor extends JFrame {
 
     public DrawEditor() {
         setTitle("Графический редактор");
-        setSize(800, 600);
+        setSize(1280, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -19,7 +19,7 @@ public class DrawEditor extends JFrame {
         add(drawPanel, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        String[] buttons = {"Линия", "Квадрат", "Круг", "Овал", "Очистить"};
+        String[] buttons = {"Кисть", "Линия", "Квадрат", "Круг", "Овал", "Ластик", "Очистить лист"};
 
         for (String text : buttons) {
             JButton button = new JButton(text);
