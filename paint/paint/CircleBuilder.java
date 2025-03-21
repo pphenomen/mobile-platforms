@@ -6,6 +6,7 @@ public class CircleBuilder implements FigureBuilder {
     private int x1, y1, x2, y2;
     private int fixedRadius = -1; // -1 = не задан
     private Color color = Color.BLACK;
+    private PaintStyleStrategy style = new NormalStyle();
 
     public CircleBuilder setFixedRadius(int radius) {
         this.fixedRadius = radius;
@@ -27,11 +28,16 @@ public class CircleBuilder implements FigureBuilder {
         return this;
     }
 
+    public CircleBuilder setStyle(PaintStyleStrategy style) {
+        this.style = style;
+        return this;
+    }
+
     @Override
     public IDrawFigure build() {
         int diameter = fixedRadius > 0 ? fixedRadius : Math.abs(x2 - x1);
         int x = x1 - (diameter / 2);
         int y = y1 - (diameter / 2);
-        return new Circle(x, y, diameter, color);
+        return new Circle(x, y, diameter, color, style);
     }
 }

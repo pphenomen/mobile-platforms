@@ -21,9 +21,42 @@ public class DrawEditor extends JFrame {
         JPanel buttonPanel = new JPanel();
         String[] buttons = {"Кисть", "Линия", "Квадрат", "Круг", "Овал", "Ластик", "Очистить лист"};
 
+        String[] styles = {"Обычная", "Толстая", "Пунктир"};
+        JComboBox<String> styleBox = new JComboBox<>(styles);
+
+        styleBox.addActionListener(e -> {
+            int selected = styleBox.getSelectedIndex();
+            String currentShape = drawPanel.getSelectedShape();
+
+            if (selected == 2 && (currentShape.equals("Кисть") || currentShape.equals("Ластик"))) {
+                JOptionPane.showMessageDialog(this, "Пунктир недоступен для кисти и ластика.", "Ограничение", JOptionPane.WARNING_MESSAGE);
+                styleBox.setSelectedIndex(0);
+                drawPanel.setSelectedStyle(new NormalStyle());
+                return;
+            }
+
+            switch (selected) {
+                case 0 -> drawPanel.setSelectedStyle(new NormalStyle());
+                case 1 -> drawPanel.setSelectedStyle(new ThickStyle());
+                case 2 -> drawPanel.setSelectedStyle(new DashedStyle());
+            }
+        });
+
+        buttonPanel.add(new JLabel("Стиль:"));
+        buttonPanel.add(styleBox);
+
         for (String text : buttons) {
             JButton button = new JButton(text);
-            button.addActionListener(e -> drawPanel.setSelectedShape(text));
+            button.addActionListener(e -> {
+                drawPanel.setSelectedShape(text);
+
+                // отключение пунктира для кисти и ластика
+                if ((text.equals("Кисть") || text.equals("Ластик")) && styleBox.getSelectedIndex() == 2) {
+                    styleBox.setSelectedIndex(0);
+                    drawPanel.setSelectedStyle(new NormalStyle());
+                }
+            });
+
             buttonPanel.add(button);
         }
 

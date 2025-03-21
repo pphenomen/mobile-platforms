@@ -14,6 +14,7 @@ public class DrawPanel extends JPanel {
     private int customRadius = 50; // радиус по умолчанию
     private Color selectedColor = Color.BLACK;
     private PaintBrush currentBrushStroke = null;
+    private PaintStyleStrategy selectedStyle = new NormalStyle();
 
     public DrawPanel() {
         setBackground(Color.WHITE);
@@ -27,7 +28,7 @@ public class DrawPanel extends JPanel {
 
                 if (selectedShape.equals("Кисть") || selectedShape.equals("Ластик")) {
                     Color colorToUse = selectedShape.equals("Ластик") ? Color.WHITE : selectedColor;
-                    currentBrushStroke = new PaintBrush(colorToUse);
+                    currentBrushStroke = new PaintBrush(colorToUse, selectedStyle);
                     currentBrushStroke.addPoint(startX, startY);
                     figures.add(currentBrushStroke);
                     repaint();
@@ -59,9 +60,8 @@ public class DrawPanel extends JPanel {
         });
     }
 
-
     public void setSelectedShape(String shape) {
-        if (shape.equals("Очистить")) {
+        if (shape.equals("Очистить лист")) {
             figures.clear();
             repaint();
         } else {
@@ -72,7 +72,7 @@ public class DrawPanel extends JPanel {
     public void setCircleRadius(String radiusText) {
         try {
             customRadius = Integer.parseInt(radiusText);
-            selectedShape = "Окружность"; // Выбираем режим рисования окружности
+            selectedShape = "Окружность"; // выбираем режим рисования окружности
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Введите корректный радиус!", "Ошибка", JOptionPane.ERROR_MESSAGE);
         }
@@ -86,6 +86,7 @@ public class DrawPanel extends JPanel {
                 figure = new LineBuilder()
                         .setCoordinates(startX, startY, endX, endY)
                         .setColor(selectedColor)
+                        .setStyle(selectedStyle)
                         .build();
                 break;
 
@@ -93,6 +94,7 @@ public class DrawPanel extends JPanel {
                 figure = new RectangleBuilder()
                         .setCoordinates(startX, startY, endX, endY)
                         .setColor(selectedColor)
+                        .setStyle(selectedStyle)
                         .build();
                 break;
 
@@ -100,6 +102,7 @@ public class DrawPanel extends JPanel {
                 figure = new CircleBuilder()
                         .setCoordinates(startX, startY, endX, endY)
                         .setColor(selectedColor)
+                        .setStyle(selectedStyle)
                         .build();
                 break;
 
@@ -107,6 +110,7 @@ public class DrawPanel extends JPanel {
                 figure = new OvalBuilder()
                         .setCoordinates(startX, startY, endX, endY)
                         .setColor(selectedColor)
+                        .setStyle(selectedStyle)
                         .build();
                 break;
 
@@ -115,6 +119,7 @@ public class DrawPanel extends JPanel {
                         .setFixedRadius(customRadius)
                         .setCoordinates(startX, startY, endX, endY)
                         .setColor(selectedColor)
+                        .setStyle(selectedStyle)
                         .build();
                 break;
         }
@@ -129,11 +134,19 @@ public class DrawPanel extends JPanel {
         this.selectedColor = color;
     }
 
+    public void setSelectedStyle(PaintStyleStrategy style) {
+        this.selectedStyle = style;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (IDrawFigure figure : figures) {
             figure.draw(g);
         }
+    }
+
+    public String getSelectedShape() {
+        return selectedShape;
     }
 }

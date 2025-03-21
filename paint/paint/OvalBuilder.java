@@ -5,6 +5,7 @@ import java.awt.*;
 public class OvalBuilder implements FigureBuilder {
     private int x1, y1, x2, y2;
     private Color color = Color.BLACK;
+    private PaintStyleStrategy style = new NormalStyle();
 
     @Override
     public FigureBuilder setCoordinates(int x1, int y1, int x2, int y2) {
@@ -21,8 +22,13 @@ public class OvalBuilder implements FigureBuilder {
         return this;
     }
 
+    public OvalBuilder setStyle(PaintStyleStrategy style) {
+        this.style = style;
+        return this;
+    }
+
     @Override
     public IDrawFigure build() {
-        return new Oval(x1, y1, Math.abs(x2 - x1), Math.abs(y2 - y1), color);
+        return new Oval(x1, y1, Math.abs(x2 - x1), Math.abs(y2 - y1), color, style);
     }
 }
