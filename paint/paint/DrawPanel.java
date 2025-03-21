@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DrawPanel extends JPanel {
-    private String selectedShape = "Линия";
-    private List<IDrawFigure> figures = new ArrayList<>();
+    private String selectedShape = "Линия"; // фигура по умолчанию
+    public List<IDrawFigure> figures = new ArrayList<>();
     private int startX, startY, endX, endY;
-    private int customRadius = 50; // Радиус по умолчанию
+    private int customRadius = 50; // радиус по умолчанию
+    private Color selectedColor = Color.BLACK;
 
     public DrawPanel() {
         setBackground(Color.WHITE);
@@ -51,24 +52,54 @@ public class DrawPanel extends JPanel {
     }
 
     private void addFigure() {
+        IDrawFigure figure = null;
+
         switch (selectedShape) {
             case "Линия":
-                figures.add(new Line(startX, startY, endX, endY));
+                figure = new LineBuilder()
+                        .setCoordinates(startX, startY, endX, endY)
+                        .setColor(selectedColor)
+                        .build();
                 break;
+
             case "Квадрат":
-                figures.add(new RectangleShape(startX, startY, endX - startX, endX - startX));
+                figure = new RectangleBuilder()
+                        .setCoordinates(startX, startY, endX, endY)
+                        .setColor(selectedColor)
+                        .build();
                 break;
+
             case "Круг":
-                figures.add(new Circle(startX, startY, Math.abs(endX - startX)));
+                figure = new CircleBuilder()
+                        .setCoordinates(startX, startY, endX, endY)
+                        .setColor(selectedColor)
+                        .build();
                 break;
+
             case "Овал":
-                figures.add(new Oval(startX, startY, Math.abs(endX - startX), Math.abs(endY - startY)));
+                figure = new OvalBuilder()
+                        .setCoordinates(startX, startY, endX, endY)
+                        .setColor(selectedColor)
+                        .build();
                 break;
+
             case "Окружность":
-                figures.add(new Circle(startX - customRadius / 2, startY - customRadius / 2, customRadius));
+                figure = new CircleBuilder()
+                        .setFixedRadius(customRadius)
+                        .setCoordinates(startX, startY, endX, endY)
+                        .setColor(selectedColor)
+                        .build();
                 break;
         }
-        repaint();
+
+        if (figure != null) {
+            figures.add(figure);
+            repaint();
+        }
+    }
+
+    public void setSelectedColor(Color color) {
+        this.selectedColor = color;
     }
 
     @Override

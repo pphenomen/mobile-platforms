@@ -6,6 +6,8 @@ import java.awt.*;
 public class DrawEditor extends JFrame {
     private DrawPanel drawPanel;
     private JTextField radiusField;
+    private JComboBox<String> colorBox;
+    private final Color[] colors = {Color.BLACK, Color.RED, Color.GREEN, Color.BLUE, Color.ORANGE, Color.MAGENTA};
 
     public DrawEditor() {
         setTitle("Графический редактор");
@@ -24,6 +26,16 @@ public class DrawEditor extends JFrame {
             button.addActionListener(e -> drawPanel.setSelectedShape(text));
             buttonPanel.add(button);
         }
+
+        String[] colorNames = {"Черный", "Красный", "Зелёный", "Синий", "Оранжевый", "Фиолетовый"};
+        colorBox = new JComboBox<>(colorNames);
+        colorBox.addActionListener(e -> {
+            int selectedIndex = colorBox.getSelectedIndex();
+            drawPanel.setSelectedColor(colors[selectedIndex]);
+        });
+
+        buttonPanel.add(new JLabel("Цвет:"));
+        buttonPanel.add(colorBox);
 
         radiusField = new JTextField(5);
         JButton circleButton = new JButton("Окружность");
