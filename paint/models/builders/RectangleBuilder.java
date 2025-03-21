@@ -1,7 +1,7 @@
 package models.builders;
 
 import models.figures.IDrawFigure;
-import models.figures.RectangleShape;
+import models.figures.Rectangle;
 import models.strategy.NormalStyle;
 import models.strategy.PaintStyleStrategy;
 
@@ -34,7 +34,10 @@ public class RectangleBuilder implements FigureBuilder {
 
     @Override
     public IDrawFigure build() {
-        int size = Math.abs(x2 - x1);
-        return new RectangleShape(x1, y1, size, size, color, style);
+        int x = Math.min(x1, x2);
+        int y = Math.min(y1, y2);
+        int width = Math.abs(x2 - x1);
+        int height = Math.abs(y2 - y1);
+        return new Rectangle(x, y, width, height, color, style);
     }
 }

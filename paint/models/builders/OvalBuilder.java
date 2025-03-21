@@ -34,6 +34,11 @@ public class OvalBuilder implements FigureBuilder {
 
     @Override
     public IDrawFigure build() {
-        return new Oval(x1, y1, Math.abs(x2 - x1), Math.abs(y2 - y1), color, style);
+        int x = Math.min(x1, x2);
+        int y = Math.min(y1, y2);
+        int width = Math.abs(x2 - x1);
+        int height = Math.abs(y2 - y1);
+
+        return new Oval(x, y, width, height, color, style);
     }
 }

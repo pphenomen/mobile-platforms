@@ -22,7 +22,7 @@ public class DrawPanel extends JPanel {
     private int startX, startY, endX, endY;
     private int customRadius = 50; // радиус по умолчанию
     private Color selectedColor = Color.BLACK;
-    private PaintBrush currentBrushStroke = null;
+    private PaintBrush currentBrushStyle = null;
     private PaintStyleStrategy selectedStyle = new NormalStyle();
 
     public DrawPanel() {
@@ -37,9 +37,9 @@ public class DrawPanel extends JPanel {
 
                 if (selectedShape.equals("Кисть") || selectedShape.equals("Ластик")) {
                     Color colorToUse = selectedShape.equals("Ластик") ? Color.WHITE : selectedColor;
-                    currentBrushStroke = new PaintBrush(colorToUse, selectedStyle);
-                    currentBrushStroke.addPoint(startX, startY);
-                    figures.add((IDrawFigure) currentBrushStroke);
+                    currentBrushStyle = new PaintBrush(colorToUse, selectedStyle);
+                    currentBrushStyle.addPoint(startX, startY);
+                    figures.add(currentBrushStyle);
                     repaint();
                 }
             }
@@ -52,7 +52,7 @@ public class DrawPanel extends JPanel {
                 if (!selectedShape.equals("Кисть") && !selectedShape.equals("Ластик")) {
                     addFigure();
                 } else {
-                    currentBrushStroke = null;
+                    currentBrushStyle = null;
                 }
             }
         });
@@ -61,8 +61,8 @@ public class DrawPanel extends JPanel {
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if ((selectedShape.equals("Кисть") || selectedShape.equals("Ластик")) && currentBrushStroke != null) {
-                    currentBrushStroke.addPoint(e.getX(), e.getY());
+                if ((selectedShape.equals("Кисть") || selectedShape.equals("Ластик")) && currentBrushStyle != null) {
+                    currentBrushStyle.addPoint(e.getX(), e.getY());
                     repaint();
                 }
             }
@@ -147,15 +147,15 @@ public class DrawPanel extends JPanel {
         this.selectedStyle = style;
     }
 
+    public String getSelectedShape() {
+        return selectedShape;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (IDrawFigure figure : figures) {
             figure.draw(g);
         }
-    }
-
-    public String getSelectedShape() {
-        return selectedShape;
     }
 }

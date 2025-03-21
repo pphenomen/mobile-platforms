@@ -22,6 +22,6 @@ public class Circle implements IDrawFigure {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(color);
         style.apply(g2d);
-        g.drawOval(x, y, diameter, diameter);
+        g2d.drawOval(x, y, diameter, diameter);
     }
 }

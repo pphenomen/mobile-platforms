@@ -4,12 +4,12 @@ import models.strategy.PaintStyleStrategy;
 
 import java.awt.*;
 
-public class RectangleShape implements IDrawFigure {
+public class Rectangle implements IDrawFigure {
     private int x, y, width, height;
     private Color color;
     private PaintStyleStrategy style;
 
-    public RectangleShape(int x, int y, int width, int height, Color color, PaintStyleStrategy style) {
+    public Rectangle(int x, int y, int width, int height, Color color, PaintStyleStrategy style) {
         this.x = x;
         this.y = y;
         this.width = width;

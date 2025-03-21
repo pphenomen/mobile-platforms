@@ -40,7 +40,7 @@ public class DrawEditor extends JFrame {
         JPanel toolPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         toolPanel.setBorder(BorderFactory.createTitledBorder("Инструменты"));
 
-        String[] tools = {"Кисть", "Линия", "Квадрат", "Круг", "Овал", "Ластик"};
+        String[] tools = {"Кисть", "Линия", "Прямоугольник", "Круг", "Овал", "Ластик"};
         for (String tool : tools) {
             JButton button = new JButton(tool);
             button.addActionListener(e -> {
