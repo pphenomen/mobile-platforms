@@ -42,7 +42,7 @@ public class CircleBuilder implements FigureBuilder {
     public IDrawFigure build() {
         int dx = Math.abs(x2 - x1);
         int dy = Math.abs(y2 - y1);
-        int diameter = Math.min(dx, dy);
+        int diameter = fixedRadius > 0 ? fixedRadius : Math.min(dx, dy);
         int x = Math.min(x1, x2);
         int y = Math.min(y1, y2);
         return new Circle(x, y, diameter, color, style);
