@@ -1,6 +1,5 @@
-package controllers;
+package models.figures;
 
-import models.figures.IDrawFigure;
 import models.strategy.PaintStyleStrategy;
 
 import java.awt.*;
